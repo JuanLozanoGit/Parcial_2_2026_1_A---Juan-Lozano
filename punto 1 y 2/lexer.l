@@ -1,6 +1,13 @@
 %{
 #include "parser.tab.h"
 %}
+%option caseless
+%%
+"INSERT"    { return CREATE; }
+"SELECT"    { return READ; }
+"UPDATE"    { return UPDATE; }
+"DELETE"    { return DELETE; }
+...
 %%
 "INSERT"    { return CREATE; }
 "SELECT"    { return READ; }
