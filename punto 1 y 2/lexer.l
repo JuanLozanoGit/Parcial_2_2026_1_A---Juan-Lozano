@@ -1,6 +1,9 @@
 %{
+#include <string.h>
 #include "parser.tab.h"
 %}
+
+%option caseless
 
 %%
 "INSERT"    { return CREATE; }
@@ -12,11 +15,21 @@
 "SET"       { return SET; }
 "WHERE"     { return WHERE; }
 "VALUES"    { return VALUES; }
-[a-zA-Z_]+  { return ID; }
-\"[^\"]*\"  { return STRING; }
+
+[a-zA-Z_][a-zA-Z0-9_]* { 
+    yylval.sval = strdup(yytext); 
+    return ID; 
+}
+
+\"[^\"]*\"  { 
+    yylval.sval = strdup(yytext); 
+    return STRING; 
+}
+
 [ \t\n]     ;
 ";"         { return ';'; }
 .           { return yytext[0]; }
+
 %%
 
 int yywrap() { return 1; }
