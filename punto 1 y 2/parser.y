@@ -10,6 +10,7 @@ int yylex();
 %% 
 program: 
     | program statement ';' 
+    | program error ';' { yyerrok; printf("Error de sintaxis, intenta de nuevo.\n"); }
     ;
 
 statement:
