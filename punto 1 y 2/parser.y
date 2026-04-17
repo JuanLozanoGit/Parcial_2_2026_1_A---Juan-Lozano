@@ -10,7 +10,6 @@ int yylex();
 %% 
 program: 
     | program statement ';' 
-    | program error ';' { yyerrok; printf("Error de sintaxis, intenta de nuevo.\n"); }
     ;
 
 statement:
@@ -38,4 +37,7 @@ delete_stmt:
 
 %% 
 void yyerror(const char *s) { fprintf(stderr, "Error: %s\n", s); }
-int main() { return yyparse(); }
+int main() { 
+    printf("Iniciando traductor NoSQL (Escribe tu comando)\n");
+    return yyparse(); 
+}
