@@ -1,32 +1,18 @@
 %{
-#include <stdio.h>
-#include <string.h>
-int yylex();
-void yyerror(char *s);
+#include "bool_calc.tab.h"
 %}
 
-%token TRUE FALSE AND OR NOT
-%left OR
-%left AND
-%right NOT
-
 %%
-input: 
-    | input line
-    ;
-
-line:
-    exp '\n' { printf("Resultado: %s\n", $1 ? "TRUE" : "FALSE"); }
-    ;
-
-exp:
-    TRUE      { $$ = 1; }
-    | FALSE   { $$ = 0; }
-    | exp AND exp { $$ = $1 && $3; }
-    | exp OR exp  { $$ = $1 || $3; }
-    | NOT exp     { $$ = !$2; }
-    | '(' exp ')' { $$ = $2; }
-    ;
+"TRUE"  { return TRUE; }
+"FALSE" { return FALSE; }
+"AND"   { return AND; }
+"OR"    { return OR; }
+"NOT"   { return NOT; }
+"\n"    { return '\n'; }
+[ \t]   ; /* Ignorar espacios */
+"("     { return '('; }
+")"     { return ')'; }
+.       { return yytext[0]; }
 %%
-void yyerror(char *s) { printf("Error: %s\n", s); }
-int main() { return yyparse(); }
+
+int yywrap() { return 1; }
